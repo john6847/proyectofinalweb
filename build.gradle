@@ -1,0 +1,28 @@
+group 'com.pucmm.parcial#2'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+	
+//Librerias de Hibernate
+    compile 'org.hibernate:hibernate-core:5.1.0.Final'
+    compile 'org.hibernate:hibernate-entitymanager:5.1.0.Final'
+    //Driver de la conexion...
+    compile 'com.h2database:h2:1.4.192'
+    //Spark libraries
+    compile 'com.sparkjava:spark-core:2.5'
+    compile 'com.sparkjava:spark-template-freemarker:2.3'
+    compile 'org.freemarker:freemarker:2.3.23'
+    compile 'com.sparkjava:spark-debug-tools:0.5'
+    compile 'com.google.code.gson:gson:2.6.2'
+    // https://mvnrepository.com/artifact/com.j2html/j2html
+    compile group: 'com.j2html', name: 'j2html', version: '0.7'
+}
