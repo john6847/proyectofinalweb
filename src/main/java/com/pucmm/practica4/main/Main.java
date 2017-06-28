@@ -46,7 +46,7 @@ public class Main {
         Usuario insertar = new Usuario();
         insertar.setAdministrador(true);
         insertar.setId(1);
-        insertar.setNombre("Jhon Ridore");
+        insertar.setName("Jhon Ridore");
         insertar.setPassword("1234");
         insertar.setUsername("anyderre");
 
@@ -80,12 +80,12 @@ public class Main {
             UsuarioServices usuarioServices1 = UsuarioServices.getInstancia();
 
             List<Usuario> usuarios = usuarioServices1.getUsuario(username);
-            if (usuarios.get(0).getNombre() != null) {
+            if (usuarios.get(0).getName() != null) {
 
                 if (usuarios.get(0).getUsername().equals(username) && usuarios.get(0).getPassword().equals(password)) {
                     usuario.setId(usuarios.get(0).getId());
                     usuario.setAdministrador(usuarios.get(0).getAdministrador());
-                    usuario.setNombre(usuarios.get(0).getNombre());
+                    usuario.setName(usuarios.get(0).getName());
                     session.attribute("usuario", usuario);
                     response.redirect("/");
                 }
@@ -119,7 +119,7 @@ public class Main {
 
                 if(usuario.getAdministrador()){
                     Usuario newUsuario = new Usuario();
-                    newUsuario.setNombre(request.queryParams("nombre"));
+                    newUsuario.setName(request.queryParams("nombre"));
                     newUsuario.setAdministrador(false);
                     newUsuario.setPassword(request.queryParams("password"));
                     newUsuario.setUsername(request.queryParams("username"));
