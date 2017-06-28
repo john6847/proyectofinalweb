@@ -1,10 +1,12 @@
 package com.pucmm.practica4.services;
 
+import com.pucmm.practica4.entidades.Paste;
 import com.pucmm.practica4.entidades.Usuario;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
+
 
 /**
  * Created by john on 25/06/17.

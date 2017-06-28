@@ -8,19 +8,17 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Blog-Dany & Jhon</a>
+            <a class="navbar-brand" href="/">Copy & Paste</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+                <li class="active"><a href="/"><i class="glyphicon glyphicon-home"></i>Home <span class="sr-only">(current)</span></a></li>
                 <li class="dropdown">
-                    <a href="/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Articulo <span class="caret"></span></a>
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Paste <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/agregar/articulo">Crear Articulo</a></li>
-                        <#--<li><a href="/">Listar Articulo</a></li>-->
-                        <#--<li><a href="#">Buscar Articulo</a></li>-->
+                        <li><a href="/add/newPaste">Add new Paste</a></li>
                     </ul>
                 </li>
             </ul>
@@ -30,16 +28,25 @@
                 </div>
                 <button type="submit" class="btn btn-default">Search</button>
             </form>
+    
+           
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/login">Login</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuario <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/registrar">Agregar Usuario</a></li>
-                        <li><a href="/espacio/administrador">Espacio Autor</a></li>
+                        <li><a href="/signIn">Sign up</a></li>
+                        <li><a href="/signUp">Sign in </a></li>
                     </ul>
                 </li>
             </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li> <a href="/list/myPaste"><img src="/publico/images/list.png" title="profile" alt=""></a>
+            </li>
+            <li><a href="/update/myPaste"><img src="/publico/images/settings.png" title="my paste" alt=""></a>
+            </li>
+
+        </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>

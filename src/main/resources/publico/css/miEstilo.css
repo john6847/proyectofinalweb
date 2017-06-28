@@ -121,9 +121,7 @@ a:hover { text-decoration: none }
 .links:hover{
     cursor: pointer;
 }
-body{
-    background: url("/images/background.jpg");
-}
+
 #header{
     text-align: center;
 }
@@ -201,27 +199,7 @@ body{
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
-#chat{
-    border-radius: 100%;
-    float: right;
-}
 
-
-.pagesNumber:hover{
-    cursor: pointer;
-}
-
-.v-divider{
-    margin-left:5px;
-    margin-right:5px;
-    width:1px;
-    height:100%;
-    border-left:1px solid gray;
-}
-.userlist{
-    margin-left: 25px;
-}
-.badge{
-    color: white;
-    background-color: red;
+.radio-inline{
+    padding-right:20px;
 }

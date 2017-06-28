@@ -43,9 +43,6 @@
         <br>
         <br>
         <br>
-        <#if message??>
-        <p style="color:red;font-weight: bold">${message}</p>
-        </#if>
     </form>
     </div>
 

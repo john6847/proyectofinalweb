@@ -6,14 +6,9 @@
 
     <persistence-unit name="MiUnidadPersistencia" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>com.pucmm.practica4.entidades.Articulo</class>
-        <class>com.pucmm.practica4.entidades.Comentario</class>
-        <class>com.pucmm.practica4.entidades.Etiqueta</class>
+        <class>com.pucmm.practica4.entidades.Paste</class>
         <class>com.pucmm.practica4.entidades.Usuario</class>
-        <class>com.pucmm.practica4.entidades.Likes</class>
-        <class>com.pucmm.practica4.entidades.Dislike</class>
-        <class>com.pucmm.practica4.entidades.ArticleLike</class>
-        <class>com.pucmm.practica4.entidades.ArticleDislike</class>
+
         <properties>
             <!--<property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:test" />-->
             <property name="javax.persistence.jdbc.url" value="jdbc:h2:tcp://localhost/~/blogDb" />
