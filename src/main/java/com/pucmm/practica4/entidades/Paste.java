@@ -13,33 +13,33 @@ public class Paste {
     private long id;
     private String bloqueDeCodigo;
     private String sintaxis;
-    private Date fechaExpiracion;
+    private long fechaExpiracion;
     private String tipoExposicion;
+    private long fechaPublicacion;
     private String titulo;
     private String url;
+    private int cantidadVista;
 
-    @ManyToOne
-    private Usuario usuario;
-
-    public Paste(String bloqueDeCodigo, String sintaxis, Date fechaExpiracion, String tipoExposicion, String titulo, String url, Usuario usuario) {
+    public Paste(String bloqueDeCodigo, String sintaxis, long fechaExpiracion, String tipoExposicion, long fechaPublicacion, String titulo, String url, int cantidadVista) {
         this.bloqueDeCodigo = bloqueDeCodigo;
         this.sintaxis = sintaxis;
         this.fechaExpiracion = fechaExpiracion;
         this.tipoExposicion = tipoExposicion;
+        this.fechaPublicacion = fechaPublicacion;
         this.titulo = titulo;
         this.url = url;
-        this.usuario = usuario;
+        this.cantidadVista = cantidadVista;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public int getCantidadVista() {
+        return cantidadVista;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setCantidadVista(int cantidadVista) {
+        this.cantidadVista = cantidadVista;
     }
 
-    private Paste(){}
+    public Paste(){}
 
     public long getId() {
         return id;
@@ -65,11 +65,11 @@ public class Paste {
         this.sintaxis = sintaxis;
     }
 
-    public Date getFechaExpiracion() {
+    public long getFechaExpiracion() {
         return fechaExpiracion;
     }
 
-    public void setFechaExpiracion(Date fechaExpiracion) {
+    public void setFechaExpiracion(long fechaExpiracion) {
         this.fechaExpiracion = fechaExpiracion;
     }
 
@@ -79,6 +79,14 @@ public class Paste {
 
     public void setTipoExposicion(String tipoExposicion) {
         this.tipoExposicion = tipoExposicion;
+    }
+
+    public long getFechaPublicacion() {
+        return fechaPublicacion;
+    }
+
+    public void setFechaPublicacion(long fechaPublicacion) {
+        this.fechaPublicacion = fechaPublicacion;
     }
 
     public String getTitulo() {

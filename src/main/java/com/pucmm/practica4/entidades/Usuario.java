@@ -31,7 +31,7 @@ public class Usuario implements Serializable {
     private String email;
     private String phoneNumber;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "parent" , cascade = CascadeType.ALL)
     private List<Paste>pastes;
 
     public Usuario(){

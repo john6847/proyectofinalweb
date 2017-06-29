@@ -203,3 +203,10 @@ a:hover { text-decoration: none }
 .radio-inline{
     padding-right:20px;
 }
+.myTable{
+    background-color: lightgrey;
+    border-radius: 3px;
+}
+.mytable-white{
+    background-color: white;
+}

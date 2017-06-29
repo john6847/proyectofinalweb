@@ -14,11 +14,11 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="/"><i class="glyphicon glyphicon-home"></i>Home <span class="sr-only">(current)</span></a></li>
+                <li class="active"><a href="/"><i class="glyphicon glyphicon-home"></i><span class="sr-only">(current)</span></a></li>
                 <li class="dropdown">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Paste <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/add/newPaste">Add new Paste</a></li>
+                        <li><a href="/paste/">Add new Paste</a></li>
                     </ul>
                 </li>
             </ul>
@@ -41,9 +41,9 @@
                 </li>
             </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li> <a href="/list/myPaste"><img src="/publico/images/list.png" title="profile" alt=""></a>
+            <li> <a href="/list/myPaste"><img src="/images/list.png" title="profile" alt=""></a>
             </li>
-            <li><a href="/update/myPaste"><img src="/publico/images/settings.png" title="my paste" alt=""></a>
+            <li><a href="/update/myPaste"><img src="/images/settings.png" title="my paste" alt=""></a>
             </li>
 
         </ul>

@@ -26,11 +26,10 @@ public class PasteServices extends GestionDb<Paste>  {
         return instancia;
     }
 
-
-    public List getPaste(String titulo){
+    public List deleteByDate(long date){
         EntityManager entityManager = getEntityManager();
-        Query query= entityManager.createNamedQuery("Usuario.findByUsername");
-        query.setParameter("username", titulo+"%");
+        Query query= entityManager.createQuery("delete from Paste p where p.fechaExpiracion<=:date");
+        query.setParameter("date", date);
         return query.getResultList();
     }
 
