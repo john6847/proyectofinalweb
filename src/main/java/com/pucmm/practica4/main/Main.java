@@ -63,7 +63,9 @@ public class Main {
         Configuration configuration = new Configuration(Configuration.VERSION_2_3_23);
         configuration.setClassForTemplateLoading(Main.class, "/templates");
         FreeMarkerEngine freeMarkerEngine = new FreeMarkerEngine(configuration);
-//----------------------------Paste stuff ----------------------------------------
+
+
+//----------------------------Paste CRUD ----------------------------------------
       path("/paste",()->{
 
           get("/", (request, response) -> {
@@ -140,11 +142,19 @@ public class Main {
 
           });
 
-          get("/show/list",(request, response) -> {
+          get("/show/user/list",(request, response) -> {
               Map<String, Object>model = new HashMap<>();
               model.put("titulo", "Show list Of user Paste");
               //Method to continue
               return modelAndView(model, "verPasteBin.ftl");
+          },freeMarkerEngine);
+
+
+          get("/show/list",(request, response) -> {
+              Map<String, Object>model = new HashMap<>();
+              model.put("titulo", "Show list Of user Paste");
+              //Method to continue
+              return modelAndView(model, "PasteConMasHits.ftl");
           },freeMarkerEngine);
       });
 
@@ -218,6 +228,8 @@ public class Main {
                 return new ModelAndView(attributes,"registrar.ftl");
             },freeMarkerEngine);
         });
+
+
 
 
 //--------------------------

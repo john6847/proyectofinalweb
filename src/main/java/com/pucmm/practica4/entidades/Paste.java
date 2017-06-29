@@ -1,13 +1,14 @@
 package com.pucmm.practica4.entidades;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
  * Created by anyderre on 25/06/17.
  */
 @Entity
-public class Paste {
+public class Paste implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

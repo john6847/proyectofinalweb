@@ -16,7 +16,7 @@ public class DeletePasteThread implements Runnable {
             pasteServices= PasteServices.getInstancia();
             pasteServices.deleteByDate(TimeUnit.MILLISECONDS.toSeconds(fecha.getTime()));
             try {
-                Thread.sleep(30000);
+                Thread.sleep(300000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 break;

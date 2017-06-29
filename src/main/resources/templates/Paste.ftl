@@ -1,4 +1,5 @@
-
+<#include "header.ftl">
+<#include "nav.ftl">
 
 <div class="container">
     
@@ -6,7 +7,7 @@
       <div class="panel-heading">Copy and Paste</div>
       <div class="panel-body">
         
-            <form action="" method="post">
+            <form action="/" method="post">
                <div class="row">
                     <div class="col-md-offset col-md-7">
                            <div class="form-group">
@@ -34,7 +35,7 @@
                             </div>
                             <div class="form-group">
                                <label for="expositionType">Exposition Type</label>
-                                <select class="form-control" name="syntax" id="syntax">
+                                <select class="form-control" name="expositionType" id="expositionType">
                                        <option selected="false"> 
                                        Select One
                                        </option>
@@ -55,4 +56,4 @@
         
     </div>
     </div>
-    
+<#include "footer.ftl">
