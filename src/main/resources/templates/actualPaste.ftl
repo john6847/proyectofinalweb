@@ -12,7 +12,7 @@
                 <div>
                     <img class="iconos"  src="/images/see.png" alt="seen">0
                     <img class="iconos" src="/images/calendar.png" alt="calendar">${fecha}
-                    <img class="iconos" src="/images/guest-xxl.png" alt="guest">${user}
+                    <img class="iconos" src="/images/guest.png" alt="guest">${user}
                 </div>
             </div>
 
@@ -36,12 +36,14 @@
                             <form action="">
                                 <div class="form-group">
                                     <label for="raw">${titulo}</label>
-                                    <pre>
+                                        <pre >
                                             <code class="${paste.getSintaxis()}">
-                                                <textarea name="raw" id="raw" class="form-control" cols="30" rows="10">
+
                                                 ${paste.getBloqueDeCodigo()}
-                                                 </textarea>
+
                                             </code>
+
+
                                         </pre>
 
                                 </div>
@@ -51,25 +53,27 @@
                     </div>
 
                 </div>
-            </div>
 
-            <div class="row">
+            <div class="row" id="raw">
                 <div class="col-md-12">
                     <form action="">
                         <div class="form-group">
                             <label for="raw">Raw Paste Data</label>
-                            <textarea name="raw" id="raw" class="form-control" cols="30" rows="10">
-                                 ${paste.getBloqueDeCodigo()}
-                            </textarea>
+                            <textarea name="raw" class="form-control" cols="30" rows="10">${paste.getBloqueDeCodigo()}</textarea>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
+</div>
 
-    <link rel="stylesheet" href="/highlight/styles/sunburst.css">
-    <script type="text/javascript" src="/highlight/highlight.pack.js" ></script>
-    <script> hljs.initHighlightingOnLoad(); </script>
+
+    <script>
+        $(document).ready(function() {
+            $('pre code').each(function(i, e) {
+                hljs.highlightBlock(e);
+            });
+        });
+   </script>
 
 <#include "footer.ftl">

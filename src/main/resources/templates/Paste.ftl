@@ -16,80 +16,75 @@
                            </div>
                             <div class="form-group">
                                   <label for="bloqueDeTexto">New Paste</label>
-                                  <textarea class="form-control" name="bloqueDeTexto" id="bloqueDeTexto" cols="50" rows="20">
-                                  </textarea>
+                                  <textarea class="form-control" name="bloqueDeTexto" id="bloqueDeTexto" cols="50" rows="20"></textarea>
                             </div>
                      </div>
                         <div class="col-md-5">
                              <div class="form-group" style="margin-top:77px">
                                   <label for="syntax">Syntax</label>
                                    <select class="form-control" name="syntax" id="syntax">
-                                       <option value=" " disabled>Select One</option>
-                                       <option value="">Apache</option>
-                                       <option value="">Bash</option>
-                                       <option value="">C#</option>
-                                       <option value="">C++</option>
-                                       <option value="">CSS</option>
-                                       <option value="">CoffeeScript</option>
-                                       <option value="">Diff</option>
-                                       <option value="">HTML</option>
-                                       <option value="">XML</option>
-                                       <option value="">HTTP</option>
-                                       <option value="">Ini</option>
-                                       <option value="">JSON</option>
-                                       <option value="">JAVA</option>
-                                       <option value="">JavaScript</option>
-                                       <option value="">Makefile</option>
-                                       <option value="">Markdown</option>
-                                       <option value="">Ngnix</option>
-                                       <option value="">Objective-C</option>
-                                       <option value="">PHP</option>
-                                       <option value="">Perl</option>
-                                       <option value="">Python</option>
-                                       <option value="">Ruby</option>
-                                       <option value="">SQL</option>
-                                       <option value="">Shell</option>
-                                       <option value="">Session</option>
-                                       <option value="">Arduino</option>
-                                       <option value="">ARM Assembler</option>
-                                       <option value="">Clojure</option>
-                                       <option value="">Django</option>
-                                       <option value="">Excel</option>
-                                       <option value="">F#</option>
-                                       <option value="">Go</option>
-                                       <option value="">Haskell</option>
-                                       <option value="">Groovy</option>
-                                       <option value="">R</option>
-                                       <option value="">SML</option>
-                                       <option value="">Swift</option>
-                                       <option value="">VB.NET</option>
-                                       <option value="">YAML</option>
+                                       <option selected="disabled">Select One</option>
+                                       <option >apache</option>
+                                       <option >bash</option>
+                                       <option >c#</option>
+                                       <option >c++</option>
+                                       <option >css</option>
+                                       <option >coffeeScript</option>
+                                       <option >diff</option>
+                                       <option >html</option>
+                                       <option >xml</option>
+                                       <option >http</option>
+                                       <option >ini</option>
+                                       <option >json</option>
+                                       <option >java</option>
+                                       <option >javascript</option>
+                                       <option >makefile</option>
+                                       <option >markdown</option>
+                                       <option >ngnix</option>
+                                       <option >objective-C</option>
+                                       <option >php</option>
+                                       <option >perl</option>
+                                       <option >python</option>
+                                       <option >ruby</option>
+                                       <option >sql</option>
+                                       <option >shell</option>
+                                       <option >session</option>
+                                       <option >arduino</option>
+                                       <option >arm assembler</option>
+                                       <option >clojure</option>
+                                       <option >django</option>
+                                       <option >excel</option>
+                                       <option >f#</option>
+                                       <option >go</option>
+                                       <option >haskell</option>
+                                       <option >groovy</option>
+                                       <option>r</option>
+                                       <option >sml</option>
+                                       <option>swift</option>
+                                       <option>vb.net</option>
+                                       <option>yaml</option>
 
                                    </select>
                              </div>
                             <div class="form-group">
                                 <label for="expirationDate">Expiration Date</label>
                                 <select class="form-control" name="expirationDate" id="expirationDate">
-                                    <option value=" " disabled>
-                                        Select One
-                                    </option>
-                                    <option value="">never</option>
-                                    <option value="">10 minutes</option>
-                                    <option value="">15 minutes</option>
-                                    <option value="">30 minutes</option>
-                                    <option value="">1 hour</option>
-                                    <option value="">1 day</option>
-                                    <option value="">1 week</option>
+                                    <option selected="disabled">Select One</option>
+                                    <option>never</option>
+                                    <option>10 minutes</option>
+                                    <option>15 minutes</option>
+                                    <option>30 minutes</option>
+                                    <option>1 hour</option>
+                                    <option>1 day</option>
+                                    <option>1 week</option>
                                 </select>
                             <div class="form-group">
                                <label for="expositionType">Exposition Type</label>
                                 <select class="form-control" name="expositionType" id="expositionType">
-                                       <option value=" " disabled>
-                                       Select One
-                                       </option>
-                                    <option value="">public</option>
-                                    <option value="">private</option>
-                                    <option value="">unlisted</option>
+                                       <option selected="disabled">Select One</option>
+                                    <option >public</option>
+                                    <option >private</option>
+                                    <option >unlisted</option>
                                    </select>
                             </div>
                             <div class="row">

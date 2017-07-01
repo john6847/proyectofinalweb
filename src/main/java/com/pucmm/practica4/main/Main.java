@@ -87,8 +87,12 @@ public class Main {
                }
                paste.setTitulo(title);
                paste.setTipoExposicion(request.queryParams("expositionType"));
+               paste.setBloqueDeCodigo(request.queryParams("bloqueDeTexto"));
+                paste.setSintaxis(request.queryParams("syntax"));
+                System.out.println(request.queryParams("expositionType"));
                 long fechaDeHoy = new Date().getTime();
-                switch (request.queryParams("expirationDate")){
+                String expirationDate = request.queryParams("expirationDate");
+                switch (expirationDate){
                     case "10 minutes":
                         paste.setFechaExpiracion((10*60)+TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
                         break;
@@ -115,8 +119,7 @@ public class Main {
                         break;
 
                 }
-               paste.setBloqueDeCodigo(request.queryParams("bloqueDeTexto"));
-               paste.setSintaxis(request.queryParams("syntax"));
+
                paste.setFechaPublicacion(TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
                int sizePaste = pasteServices.findAll().size();
                if(sizePaste==0){
@@ -136,7 +139,13 @@ public class Main {
                     model.put("user", "guest");
                 }
 
-                model.put("fecha", new Date());
+                Date date = new Date(); // your date
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date);
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+                model.put("fecha", day+"/"+month+"/"+year);
                 model.put("paste", paste);
                 model.put("titulo", "Actual Paste");
                 return new ModelAndView(model, "actualPaste.ftl");
@@ -163,7 +172,6 @@ public class Main {
 
              model.put("titulo", "Update Paste");
              model.put("paste", paste);
-
              return modelAndView(model, "updatePaste.ftl");
           }, freeMarkerEngine);
 
