@@ -37,7 +37,7 @@ public class Main {
         staticFiles.location("/publico");
 
         //Starting thread
-        new DeletePasteThread().run();
+       // new DeletePasteThread().run();
 
         //Starting database
         BootStrapServices.getInstancia().init();
@@ -66,14 +66,81 @@ public class Main {
 
 
 //----------------------------Paste CRUD ----------------------------------------
-      path("/paste",()->{
+        get("/", (request, response) -> {
+            Map<String, Object> model = new HashMap<>();
+            model.put("titulo", "Welcome Page| Copy & Paste");
 
-          get("/", (request, response) -> {
-              Map<String, Object> model = new HashMap<>();
-              model.put("titulo", "Welcome Page| Copy & Paste");
+            return new ModelAndView(model, "Paste.ftl");
+        },freeMarkerEngine);
 
-              return new ModelAndView(model, "Paste.ftl");
-          },freeMarkerEngine);
+        path("/paste",()->{
+
+            //Saving Paste
+            post("/", (request, response) -> {
+                Map<String, Object> model = new HashMap<>();
+               PasteServices pasteServices = PasteServices.getInstancia();
+               Paste paste = new Paste();
+               String title=request.queryParams("title");
+                System.out.println(title);
+               if(title.isEmpty()){
+                   title="untitled";
+               }
+               paste.setTitulo(title);
+               paste.setTipoExposicion(request.queryParams("expositionType"));
+                long fechaDeHoy = new Date().getTime();
+                switch (request.queryParams("expirationDate")){
+                    case "10 minutes":
+                        paste.setFechaExpiracion((10*60)+TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                        break;
+                    case "15 minutes":
+                        paste.setFechaExpiracion((15*60)+TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                        break;
+                    case "20 minutes":
+                        paste.setFechaExpiracion((20*60)+TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                        break;
+                    case "30 minutes":
+                        paste.setFechaExpiracion((30*60)+TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                        break;
+                    case "1 hour":
+                        paste.setFechaExpiracion((60*60)+TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                        break;
+                    case "1 day":
+                        paste.setFechaExpiracion((24*60*60)+TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                        break;
+                    case "1 week":
+                        paste.setFechaExpiracion(TimeUnit.DAYS.toSeconds(7)+TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                        break;
+                    case "never":
+                        //paste.setFechaExpiracion(); Case to be determined
+                        break;
+
+                }
+               paste.setBloqueDeCodigo(request.queryParams("bloqueDeTexto"));
+               paste.setSintaxis(request.queryParams("syntax"));
+               paste.setFechaPublicacion(TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+               int sizePaste = pasteServices.findAll().size();
+               if(sizePaste==0){
+                   paste.setUrl("http://localhost:4567/paste/1");
+               }else{
+                   paste.setUrl("http://localhost:4567/paste/"+(sizePaste+1));
+               }
+
+                Usuario usuario = request.session(true).attribute("usuario");
+
+                if(usuario!=null){
+                  UsuarioServices usuarioServices1 = UsuarioServices.getInstancia();
+                  usuarioServices1.find(usuario.getId()).getPastes().add(paste);
+                  model.put("user",usuario.getUsername());
+                }else{
+                    pasteServices.crear(paste);
+                    model.put("user", "guest");
+                }
+
+                model.put("fecha", new Date());
+                model.put("paste", paste);
+                model.put("titulo", "Actual Paste");
+                return new ModelAndView(model, "actualPaste.ftl");
+            }, freeMarkerEngine);
 
           //Deleting paste
           delete("/delete/:id", (request, response) -> {
@@ -152,11 +219,27 @@ public class Main {
 
           get("/show/list",(request, response) -> {
               Map<String, Object>model = new HashMap<>();
-              model.put("titulo", "Show list Of user Paste");
-              //Method to continue
+              model.put("titulo", "Show all User");
+              PasteServices pasteServices = PasteServices.getInstancia();
+              pasteServices.getPasteByCantAccAndPublic(0);
+
               return modelAndView(model, "PasteConMasHits.ftl");
           },freeMarkerEngine);
-      });
+
+            get("/show/list/:page",(request, response) -> {
+                Map<String, Object>model = new HashMap<>();
+                int page= Integer.parseInt(request.params("page"));
+                model.put("titulo", "Show all User");
+                PasteServices pasteServices = PasteServices.getInstancia();
+                pasteServices.getPasteByCantAccAndPublic(0);
+                model.put("pasteSize", pasteServices.findAll().size());
+                return modelAndView(model, "PasteConMasHits.ftl");
+            },freeMarkerEngine);
+
+
+        });
+
+
 
 
 //---------------------------User stuff-------------------------------------------

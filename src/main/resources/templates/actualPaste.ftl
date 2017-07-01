@@ -8,11 +8,11 @@
                 <img src="" alt="">
             </div>
             <div style="margin-left:30px">
-                <h2 style="margin-bottom:20px">{Title}</h2>
+                <h2 style="margin-bottom:20px">${paste.getTitulo()}</h2>
                 <div>
                     <img class="iconos"  src="/images/see.png" alt="seen">0
-                    <img class="iconos" src="/images/calendar.png" alt="calendar">publication date
-                    <img class="iconos" src="/images/guest-xxl.png" alt="guest">guest
+                    <img class="iconos" src="/images/calendar.png" alt="calendar">${fecha}
+                    <img class="iconos" src="/images/guest-xxl.png" alt="guest">${user}
                 </div>
             </div>
 
@@ -22,17 +22,32 @@
         <div class="panel-body">
 
             <div class="panel panel-primary" >
-                <div class="panel panel-heading" style="padding:15px"> {Language}
+                <div class="panel panel-heading" style="padding:15px"> ${paste.getSintaxis()}
                     <div class="pull-right">
-                        <button class="btn btn-primary">raw</button>
-                        <button class="btn btn-primary">embed</button>
-                        <button class="btn btn-primary">edit</button>
-                        <button class="btn btn-primary">delete</button>
+                        <button class="btn btn-default">raw</button>
+                        <button class="btn btn-default">embed</button>
+                        <button class="btn btn-default">edit</button>
+                        <button class="btn btn-default">delete</button>
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="row">
+                        <div class="col-md-12">
+                            <form action="">
+                                <div class="form-group">
+                                    <label for="raw">${titulo}</label>
+                                    <pre>
+                                            <code class="${paste.getSintaxis()}">
+                                                <textarea name="raw" id="raw" class="form-control" cols="30" rows="10">
+                                                ${paste.getBloqueDeCodigo()}
+                                                 </textarea>
+                                            </code>
+                                        </pre>
 
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                     </div>
 
                 </div>
@@ -43,12 +58,18 @@
                     <form action="">
                         <div class="form-group">
                             <label for="raw">Raw Paste Data</label>
-                            <textarea name="raw" id="raw" class="form-control" cols="30" rows="10"></textarea>
+                            <textarea name="raw" id="raw" class="form-control" cols="30" rows="10">
+                                 ${paste.getBloqueDeCodigo()}
+                            </textarea>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <link rel="stylesheet" href="/highlight/styles/sunburst.css">
+    <script type="text/javascript" src="/highlight/highlight.pack.js" ></script>
+    <script> hljs.initHighlightingOnLoad(); </script>
 
 <#include "footer.ftl">

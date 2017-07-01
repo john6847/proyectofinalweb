@@ -16,37 +16,32 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/"><i class="glyphicon glyphicon-home"></i><span class="sr-only">(current)</span></a></li>
                 <li class="dropdown">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Paste <span class="caret"></span></a>
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Paste<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/paste/">Add new Paste</a></li>
+                        <li> <a href="/paste/">Add new Paste</a></li>
                     </ul>
                 </li>
             </ul>
+
             <form class="navbar-form navbar-left">
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Search">
                 </div>
                 <button type="submit" class="btn btn-default">Search</button>
             </form>
-    
-           
+
             <ul class="nav navbar-nav navbar-right">
+                <li> <a href="/list/myPaste"><img src="/images/list.png" title="my paste" alt=""></a></li>
+                <li><a href="/update/myPaste"><img src="/images/settings.png" title="update profile" alt=""></a></li>
                 <li><a href="/login">Login</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/signIn">Sign up</a></li>
-                        <li><a href="/signUp">Sign in </a></li>
+                        <li> <a href="/signIn">Sign up</a></li>
+                        <li> <a href="/signUp">Sign in </a></li>
                     </ul>
                 </li>
             </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li> <a href="/list/myPaste"><img src="/images/list.png" title="profile" alt=""></a>
-            </li>
-            <li><a href="/update/myPaste"><img src="/images/settings.png" title="my paste" alt=""></a>
-            </li>
-
-        </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>

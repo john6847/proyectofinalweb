@@ -11,9 +11,10 @@ public class DeletePasteThread implements Runnable {
     PasteServices pasteServices;
     @Override
     public void run() {
+        pasteServices= PasteServices.getInstancia();
         while (true){
             Date fecha = new Date();
-            pasteServices= PasteServices.getInstancia();
+
             pasteServices.deleteByDate(TimeUnit.MILLISECONDS.toSeconds(fecha.getTime()));
             try {
                 Thread.sleep(300000);

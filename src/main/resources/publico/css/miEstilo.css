@@ -210,3 +210,16 @@ a:hover { text-decoration: none }
 .mytable-white{
     background-color: white;
 }
+
+.paste-bin{
+    display: flex;
+}
+.public{
+    text-align: center;
+}
+.public:hover{
+   color: #4CAF50;
+}
+.iconos{
+    margin: 20px;
+}

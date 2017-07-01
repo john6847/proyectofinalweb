@@ -1,4 +1,7 @@
-div class="container">
+<#include "header.ftl">
+<#include "nav.ftl">
+
+<div class="container">
 
 <div class="panel panel-primary">
     <div class="panel-heading">Copy and Paste</div>
@@ -53,3 +56,4 @@ div class="container">
 
     </div>
 </div>
+<#include "footer.ftl">

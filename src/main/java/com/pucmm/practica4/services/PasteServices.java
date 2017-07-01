@@ -26,10 +26,20 @@ public class PasteServices extends GestionDb<Paste>  {
         return instancia;
     }
 
-    public List deleteByDate(long date){
+    public Boolean deleteByDate(long date){
         EntityManager entityManager = getEntityManager();
         Query query= entityManager.createQuery("delete from Paste p where p.fechaExpiracion<=:date");
         query.setParameter("date", date);
+        return true;
+    }
+
+    public List<Paste> getPasteByCantAccAndPublic(int startPosition){
+
+        EntityManager entityManager = getEntityManager();
+        Query query = entityManager.createQuery("select p from Paste p where p.tipoExposicion =:tipoexposicion ORDER BY p.cantidadVista DESC ");
+                query.setParameter("tipoexposicion","publico");
+                query.setFirstResult(startPosition);
+                query.setMaxResults(10);
         return query.getResultList();
     }
 
