@@ -18,7 +18,7 @@
                 <li class="dropdown">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Paste<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li> <a href="/paste/">Add new Paste</a></li>
+                        <li> <a href="/">Add new Paste</a></li>
                     </ul>
                 </li>
             </ul>
@@ -31,14 +31,14 @@
             </form>
 
             <ul class="nav navbar-nav navbar-right">
-                <li> <a href="/list/myPaste"><img src="/images/list.png" title="my paste" alt=""></a></li>
-                <li><a href="/update/myPaste"><img src="/images/settings.png" title="update profile" alt=""></a></li>
-                <li><a href="/login">Login</a></li>
+                <li> <a href="/user/show/user/list"><img src="/images/list.png" title="my paste" alt=""></a></li>
+                <li><a href="/user/update/profile"><img src="/images/settings.png" title="update profile" alt=""></a></li>
+                <li><a id="logged" href="/login">Login</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li> <a href="/signIn">Sign up</a></li>
-                        <li> <a href="/signUp">Sign in </a></li>
+                        <li> <a href="/user/signIn">Sign in</a></li>
+                        <li> <a href="/user/signUp">Sign up</a></li>
                     </ul>
                 </li>
             </ul>

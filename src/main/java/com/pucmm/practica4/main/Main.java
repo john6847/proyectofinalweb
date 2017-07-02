@@ -55,9 +55,7 @@ public class Main {
 
         if (usuarioServices.getUsuario("anyderre").isEmpty()) {
             usuarioServices.crear(insertar);
-
         }
-
 
         //Indicando la carpeta por defecto que estaremos usando.
         Configuration configuration = new Configuration(Configuration.VERSION_2_3_23);
@@ -69,6 +67,10 @@ public class Main {
         get("/", (request, response) -> {
             Map<String, Object> model = new HashMap<>();
             model.put("titulo", "Welcome Page| Copy & Paste");
+            Usuario usuario = request.session(true).attribute("usuario");
+            if(usuario!=null){
+
+            }
 
             return new ModelAndView(model, "Paste.ftl");
         },freeMarkerEngine);
@@ -147,6 +149,8 @@ public class Main {
                 int day = cal.get(Calendar.DAY_OF_MONTH);
                 model.put("fecha", day+"/"+month+"/"+year);
                 model.put("paste", paste);
+
+                model.put("publicPaste",pasteServices.getPasteByCantAccAndPublic(0));
                 model.put("titulo", "Actual Paste");
                 return new ModelAndView(model, "actualPaste.ftl");
             }, freeMarkerEngine);
@@ -229,37 +233,33 @@ public class Main {
               Map<String, Object>model = new HashMap<>();
               model.put("titulo", "Show all User");
               PasteServices pasteServices = PasteServices.getInstancia();
-              pasteServices.getPasteByCantAccAndPublic(0);
 
+              model.put("pastes", pasteServices.getPasteByCantAccAndPublic(0));
               return modelAndView(model, "PasteConMasHits.ftl");
           },freeMarkerEngine);
 
             get("/show/list/:page",(request, response) -> {
                 Map<String, Object>model = new HashMap<>();
                 int page= Integer.parseInt(request.params("page"));
-                model.put("titulo", "Show all User");
                 PasteServices pasteServices = PasteServices.getInstancia();
-                pasteServices.getPasteByCantAccAndPublic(0);
+                model.put("pastes", pasteServices.getPasteByCantAccAndPublic(page));
+
                 model.put("pasteSize", pasteServices.findAll().size());
-                return modelAndView(model, "PasteConMasHits.ftl");
+                return modelAndView(model, "pages.ftl");
             },freeMarkerEngine);
 
 
         });
-
-
-
-
 //---------------------------User stuff-------------------------------------------
         path("/user", ()->{
 
-            get("/login", (request, response) -> {
+            get("/signIn", (request, response) -> {
                 Map<String, Object> attributes = new HashMap<>();
                 attributes.put("titulo", "Login");
                 return new ModelAndView(attributes, "login.ftl");
             }, freeMarkerEngine);
 
-            post("/login", (request, response) -> {
+            post("/signIn", (request, response) -> {
                 Map<String, Object> attributes = new HashMap<>();
                 //Usuario currentUserLogin = new Usuario();
                 Session session = request.session(true);
@@ -287,14 +287,14 @@ public class Main {
                 return new ModelAndView(attributes, "login.ftl");
             }, freeMarkerEngine);
 
-            get("/register", (request, response) -> {
+            get("/signUp", (request, response) -> {
                 Map<String, Object> attributes = new HashMap<>();
 
                 attributes.put("titulo", "Registrar");
                 return new ModelAndView(attributes, "registrar.ftl");
             }, freeMarkerEngine);
 
-            post("/register", (request, response) -> {
+            post("/signUp", (request, response) -> {
                 Map<String, Object> attributes = new HashMap<>();
 
                 if(request.queryParams("password").matches(request.queryParams("password-confirm"))){
@@ -315,12 +315,46 @@ public class Main {
                 }else{
                     attributes.put("confirm", "password doesn't match");
                 }
-                attributes.put("titulo", "Registrar");
+                attributes.put("titulo", "Register User");
                 return new ModelAndView(attributes,"registrar.ftl");
             },freeMarkerEngine);
+
+            get("/update/profile", (request, response) -> {
+                Map<String, Object> model = new HashMap<>();
+                model.put("titulo", "update user profile");
+
+                Usuario usuario= request.session(true).attribute("usuario");
+                if(usuario==null){
+                    response.redirect("/user/signIn");
+                }
+                model.put("usuario", usuario);
+
+                return new ModelAndView(model, "UpdateUser.ftl");
+            },freeMarkerEngine);
+
+            post("/update/profile", (request, response) -> {
+                Map<String, Object> model = new HashMap<>();
+                model.put("titulo", "update user profile");
+
+                Usuario usuario= request.session(true).attribute("usuario");
+                usuario.setName(request.queryParams("name"));
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                usuario.setDateOfBirth(formatter.parse(request.queryParams("dateOfBirth")).getTime());
+                usuario.setEmail(request.queryParams("email"));
+                usuario.setOccupation(request.queryParams("occupation"));
+                usuario.setPhoneNumber(request.queryParams("phoneNumber"));
+                //getting profile photo
+                String photo = request.queryParams("optradio");
+                System.out.println(photo);
+
+                if(usuario!=null){
+                    response.redirect("/user/signIn");
+                }
+                model.put("usuario", usuario);
+
+                return new ModelAndView(model, "/");
+            },freeMarkerEngine);
         });
-
-
 
 
 //--------------------------
@@ -330,8 +364,6 @@ public class Main {
                 response.redirect("/login");
             }
         });
-
-
 
     }
     private static int getHerokuAssignedPort() {

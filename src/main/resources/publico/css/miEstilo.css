@@ -211,14 +211,12 @@ a:hover { text-decoration: none }
     background-color: white;
 }
 
-.paste-bin{
-    display: flex;
-}
+
 .public{
     text-align: center;
 }
 .public:hover{
-   color: #4CAF50;
+    background-color: salmon;
 }
 .iconos{
     margin: 20px;
@@ -226,4 +224,17 @@ a:hover { text-decoration: none }
 #raw{
     margin-left: 10px;
     margin-right: 10px;
+}
+
+#paste-bin{
+    display: flex;
+}
+.profile-image{
+    width: 28px;
+    height: 28px;
+
+   }
+.radio-inline{
+    margin-left: 60px;
+    margin-right: 60px;
 }

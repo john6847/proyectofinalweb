@@ -43,4 +43,5 @@ public class PasteServices extends GestionDb<Paste>  {
         return query.getResultList();
     }
 
+
 }

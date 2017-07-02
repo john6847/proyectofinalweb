@@ -26,7 +26,7 @@ public class Usuario implements Serializable {
     @Column(nullable = false)
     private Boolean administrador;
     private String occupation;
-    private Date dateOfBirth;
+    private long dateOfBirth;
     private byte[] profilePicture;
     private String email;
     private String phoneNumber;
@@ -38,7 +38,7 @@ public class Usuario implements Serializable {
 
     }
 
-    public Usuario(String username, String password, String name, Boolean administrador, String occupation, Date dateOfBirth, byte[] profilePicture, String email, String phoneNumber, List<Paste> pastes) {
+    public Usuario(String username, String password, String name, Boolean administrador, String occupation, long dateOfBirth, byte[] profilePicture, String email, String phoneNumber, List<Paste> pastes) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -86,11 +86,11 @@ public class Usuario implements Serializable {
         this.profilePicture = profilePicture;
     }
 
-    public Date getDateOfBirth() {
+    public long getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(long dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

@@ -13,7 +13,7 @@
         <h3 style="text-align:center;">Login</h3>
     </div>
      <br>
-    <form action="/login" method="post">
+    <form action="/user/signIn" method="post">
         
         <div class="row">
           <div class="col-md-offset-4 col-md-5">              
