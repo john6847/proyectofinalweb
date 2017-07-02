@@ -12,17 +12,22 @@ import javax.persistence.criteria.CriteriaQuery;
 import java.lang.reflect.Field;
 import java.util.List;
 public class GestionDb<T> {
+
     private EntityManagerFactory entityManagerFactory;
+    private static ThreadLocal<EntityManager> threadLocal=  new ThreadLocal<EntityManager>();
     private Class<T> entidad;
 
     public GestionDb(Class<T> entidad){
         this.entidad =entidad;
         if(entityManagerFactory==null){
             entityManagerFactory= Persistence.createEntityManagerFactory("MiUnidadPersistencia");
+
         }
 
     }
+
     public EntityManager getEntityManager(){
+
         return entityManagerFactory.createEntityManager();
     }
 
@@ -43,6 +48,7 @@ public class GestionDb<T> {
 
     public void crear(T entidad){
         EntityManager entityManager = getEntityManager();
+        threadLocal.set(entityManager);
         entityManager.getTransaction().begin();
         try {
             if(getFieldValue(entidad)!=null && entityManager.find(this.entidad,getFieldValue(entidad))==null){

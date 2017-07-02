@@ -41,24 +41,59 @@
                         <div class="form-group">
                             <label>Choose Perfil Icon</label>
                             <div style="border:1px solid lightgrey;border-radius: 3px;padding: 20px ">
-                                <div class="prof">
-                                    <label class="radio-inline"><input type="radio" name="optradio"><img class="profile-image img-rounded" src="/images/png/boy.png" alt=""></label>
-                                    <label class="radio-inline"><input type="radio" name="optradio"><img class="profile-image img-rounded" src="/images/png/boy-1.png" alt=""></label>
-                                    <label class="radio-inline"><input type="radio" name="optradio"><img class="profile-image img-rounded" src="/images/png/girl.png" alt=""></label>
-                                </div>
-                                <div class="prof">
-                                    <label class="radio-inline">
-                                        <input type="radio" name="optradio"><img class="profile-image img-rounded" src="/images/png/girl-1.png" alt=""></label>
-                                    <label class="radio-inline"><input type="radio" name="optradio"><img class="profile-image img-rounded" src="/images/png/man.png" alt=""></label>
-                                    <label class="radio-inline"><input type="radio" name="optradio"><img class="profile-image img-rounded" src="/images/png/man-1.png" alt=""></label>
-                                </div>
-                                <div class="prof">
-                                    <label class="radio-inline"><input type="radio" name="optradio"><img class="profile-image img-rounded" src="/images/png/man-2.png" alt=""></label>
-                                    <label class="radio-inline"><input type="radio" name="optradio"><img class="profile-image img-rounded" src="/images/png/man-3.png" alt=""></label>
-                                    <label class="radio-inline"><input type="radio" name="optradio"><img class="profile-image img-rounded" src="/images/png/man-4.png" alt=""></label>
-                                </div>
-                            </div>
+                                <div class="prof ">
+                                    <div class="radio-inline">
+                                    <input type="radio" value="/images/png/boy.png" name="optradio" id="optradio"/>
+                                    <label for="optradio"><img  class="profile-image img-rounded" src="/images/png/boy.png" alt=""></label>
+                                    </div>
 
+                                    <div class="radio-inline">
+                                        <input  type="radio" value="/images/png/boy-1.png" name="optradio" id="optradio"/>
+                                        <label for="optradio"><img  class="profile-image img-rounded" src="/images/png/boy-1.png" alt=""></label>
+                                    </div>
+
+                                    <div class="radio-inline">
+                                        <input  type="radio" value="/images/png/girl.png" name="optradio" id="optradio"/>
+                                        <label for="optradio"><img  class="profile-image img-rounded" src="/images/png/girl.png" alt=""></label>
+                                    </div>
+                                </div>
+                                <div class="prof ">
+
+                                    <div class="radio-inline">
+                                        <input type="radio" value="/images/png/girl-1.png" name="optradio" id="optradio"/>
+                                        <label for="optradio"><img  class="profile-image img-rounded" src="/images/png/girl-1.png" alt=""></label>
+                                    </div>
+
+                                    <div class="radio-inline">
+                                        <input type="radio" value="/images/png/man.png" name="optradio" id="optradio"/>
+                                        <label for="optradio"><img  class="profile-image img-rounded" src="/images/png/man.png" alt=""></label>
+                                    </div>
+
+                                    <div class="radio-inline">
+                                        <input type="radio" value="/images/png/man-1.png" name="optradio" id="optradio"/>
+                                        <label for="optradio"><img  class="profile-image img-rounded" src="/images/png/man-1.png" alt=""></label>
+                                    </div>
+
+                                </div>
+
+                                <div class="prof">
+
+                                    <div class="radio-inline">
+                                        <input type="radio" value="/images/png/man-2.png" name="optradio" id="optradio"/>
+                                        <label for="optradio"><img  class="profile-image img-rounded" src="/images/png/man-2.png" alt=""></label>
+                                    </div>
+
+                                    <div class="radio-inline">
+                                        <input type="radio" value="/images/png/man-3.png" name="optradio" id="optradio"/>
+                                        <label for="optradio"><img  class="profile-image img-rounded" src="/images/png/man-3.png" alt=""></label>
+                                    </div>
+
+                                    <div class="radio-inline">
+                                        <input type="radio" value="/images/png/man-4.png" name="optradio" id="optradio"/>
+                                        <label for="optradio"><img  class="profile-image img-rounded" src="/images/png/man-4.png" alt=""></label>
+                                    </div>
+                                    </div>
+                            </div>
                         </div>
                     </div>
 

@@ -275,7 +275,7 @@ public class Main {
 
                     if (usuarios.get(0).getUsername().equals(username) && usuarios.get(0).getPassword().equals(password)) {
                         usuario.setId(usuarios.get(0).getId());
-                        usuario.setAdministrador(usuarios.get(0).getAdministrador());
+                         usuario.setAdministrador(usuarios.get(0).getAdministrador());
                         usuario.setName(usuarios.get(0).getName());
                         session.attribute("usuario", usuario);
                         response.redirect("/");

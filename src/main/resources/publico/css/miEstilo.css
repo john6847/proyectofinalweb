@@ -229,11 +229,13 @@ a:hover { text-decoration: none }
 #paste-bin{
     display: flex;
 }
+
 .profile-image{
     width: 28px;
     height: 28px;
 
    }
+
 .radio-inline{
     margin-left: 60px;
     margin-right: 60px;
