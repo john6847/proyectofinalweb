@@ -23,9 +23,10 @@
                     <#if pastes??>
                         <#list pastes as paste>
                         <tr>
-                            <td>${paste.getTitulo()}</td>
+                            <td><a href="/paste/show/${paste.getId()}">${paste.getTitulo()}</a></td>
                             <td>${paste.getCantidadVista()}</td>
-                            <td>${paste.getFechaPublicacion()}</td>
+                            <#assign fecha = (paste.getFechaPublicacion()*1000)?number_to_datetime>
+                            <td>${fecha}</td>
                             <td>${paste.getSintaxis()}</td>
                             <td>
                             </td>

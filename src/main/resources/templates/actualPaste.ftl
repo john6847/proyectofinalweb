@@ -13,9 +13,9 @@
             <div style="margin-left:30px">
                 <h2 style="margin-bottom:15px">${paste.getTitulo()}</h2>
                 <div>
-                    <img class="iconos"  src="/images/see.png" alt="seen">${paste.getCantidadVista()}
-                    <img class="iconos" src="/images/calendar.png" alt="calendar">${fecha}
-                    <img class="iconos" src="/images/guest.png" alt="guest">${user}
+                    <img class="iconos"  src="/images/see.png" alt="seen"><span id="vista">${paste.getCantidadVista()}</span>
+                    <img class="iconos" src="/images/calendar.png" alt="calendar"><span id="fecha">${fecha}</span>
+                    <img class="iconos" src="/images/guest.png" alt="guest"><span id="user">${user}</span>
                 </div>
             </div>
 
@@ -27,7 +27,7 @@
             <div class="panel panel-primary" >
                 <div class="panel panel-heading" style="padding:15px"> ${paste.getSintaxis()}
                     <div class="pull-right">
-                        <a href="/paste/raw" class="btn btn-default raw" >raw</a>
+                        <a href="/paste/raw/${paste.getId()}" class="btn btn-default raw" >raw</a>
                         <button class="btn btn-default">embed</button>
                         <a href="/paste/modify/${paste.getId()}" class="btn btn-default">edit</a>
                         <a href="/paste/delete/${paste.getId()}" class="btn btn-default">delete</a>
@@ -66,6 +66,7 @@
             </div>
         </div>
 </div>
+    <div id="pasteId" style="display: none;">${paste.getId()}</div>
 </div>
 
     <script>
@@ -73,7 +74,18 @@
             $('pre code').each(function(i, e) {
                 hljs.highlightBlock(e);
             });
+
+            var id = $('#pasteId').text();
+
+            $.ajax(
+                {
+                url: '/paste/update/hits/' + id, success: function (data) {
+                    $('#vista').html(data);
+                }
+            });
+
         });
+
 
 
     </script>

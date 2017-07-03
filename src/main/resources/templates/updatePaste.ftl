@@ -12,8 +12,7 @@
                 <ul class="list-group">
                 <#if publicPaste??>
                     <#list publicPaste as p>
-                        <li class="list-group-item">${p.getTitulo()}<span class="pull-right">${p.getSintaxis()}</span></li>
-                        span></li>
+                        <li class="list-group-item"><a href="/paste/show/${p.getId()}">${p.getTitulo()}</a><span class="pull-right">${p.getSintaxis()}</span></li>
                     </#list>
                 </#if>
                 </ul>
@@ -34,7 +33,7 @@
                             <div class="form-group">
                                 <label for="bloqueDeTexto">New Paste</label>
                                 <textarea class="form-control" name="bloqueDeTexto" id="bloqueDeTexto" cols="50"
-                                          rows="20">${paste.bloqueDeCodigo()}</textarea>
+                                          rows="20">${paste.getBloqueDeCodigo()}</textarea>
                             </div>
                         </div>
                         <div class="col-md-5">
