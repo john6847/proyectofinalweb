@@ -28,7 +28,7 @@
                 <div class="panel panel-heading" style="padding:15px"> ${paste.getSintaxis()}
                     <div class="pull-right">
                         <a href="/paste/raw/${paste.getId()}" class="btn btn-default raw" >raw</a>
-                        <button class="btn btn-default">embed</button>
+                        <a class="btn btn-default" href="/paste/embed/${paste.getId()}">embed</a>
                         <a href="/paste/modify/${paste.getId()}" class="btn btn-default">edit</a>
                         <a href="/paste/delete/${paste.getId()}" class="btn btn-default">delete</a>
                     </div>

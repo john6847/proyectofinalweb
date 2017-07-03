@@ -92,6 +92,15 @@ a:hover { text-decoration: none }
     padding-left: 22px;
 }
 
+.embed {
+    margin: 10px 0px;
+    padding:12px;
+
+}
+.embed {
+    color: #00529B;
+    background-color: #BDE5F8;
+}
 
 #pswd_info::before {
     background: #dfdfdf none repeat scroll 0 0;

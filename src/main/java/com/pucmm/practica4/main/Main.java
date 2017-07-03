@@ -123,11 +123,11 @@ public class Main {
 
                paste.setFechaPublicacion(TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
                int sizePaste = pasteServices.findAll().size();
-               if(sizePaste==0){
-                   paste.setUrl("http://localhost:4567/paste/1");
-               }else{
-                   paste.setUrl("http://localhost:4567/paste/"+(sizePaste+1));
-               }
+                if(sizePaste==0){
+                    paste.setUrl("http://localhost:4567/paste/show/embed/1");
+                }else{
+                    paste.setUrl("http://localhost:4567/paste/show/embed/"+(sizePaste+1));
+                }
 
                 Usuario usuario = request.session(true).attribute("usuario");
 
@@ -232,6 +232,26 @@ public class Main {
                 response.redirect("/");
                 return "";
             });
+            //embedding paste
+            get("/embed/:id", (request, response) -> {
+                Map <String, Object> model = new HashMap<>();
+                PasteServices pasteServices = PasteServices.getInstancia();
+                Paste paste= pasteServices.find(Long.parseLong(request.params("id")));
+                System.out.println(paste.getId()    );
+                model.put("titulo", "embed Paste");
+                model.put("paste", paste);
+                return modelAndView(model, "embededPage.ftl");
+            },freeMarkerEngine);
+
+            get("/show/embed/:id", (request, response) -> {
+                Map <String, Object> model = new HashMap<>();
+                PasteServices pasteServices = PasteServices.getInstancia();
+                Paste paste= pasteServices.find(Long.parseLong(request.params("id")));
+                System.out.println(paste.getId()    );
+                model.put("titulo", "embed Paste");
+                model.put("paste", paste);
+                return modelAndView(model, "showEmbed.ftl");
+            },freeMarkerEngine);
 
             get("/update/hits/:id",(request, response) -> {
                 PasteServices pasteServices = PasteServices.getInstancia();
