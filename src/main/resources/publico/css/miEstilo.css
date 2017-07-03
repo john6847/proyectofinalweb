@@ -207,7 +207,7 @@ a:hover { text-decoration: none }
     background-color: lightgrey;
     border-radius: 3px;
 }
-.mytable-white{
+.myTable-white{
     background-color: white;
 }
 
@@ -237,6 +237,5 @@ a:hover { text-decoration: none }
    }
 
 .radio-inline{
-    margin-left: 60px;
-    margin-right: 60px;
+
 }

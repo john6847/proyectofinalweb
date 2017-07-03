@@ -12,8 +12,7 @@
             <ul class="list-group">
                 <#if publicPaste??>
                     <#list publicPaste as p>
-                        <li class="list-group-item">${p.getTitulo()}<span class="pull-right">${p.getSintaxis()}</span></li>
-                        span></li>
+                        <li class="list-group-item"><a href="/paste/show/${p.getId()}">${p.getTitulo()}</a><span class="pull-right">${p.getSintaxis()}</span></li>
                     </#list>
                 </#if>
             </ul>
@@ -56,6 +55,7 @@
                                 <option>json</option>
                                 <option>java</option>
                                 <option>javascript</option>
+                                <option>lisp</option>
                                 <option>makefile</option>
                                 <option>markdown</option>
                                 <option>ngnix</option>

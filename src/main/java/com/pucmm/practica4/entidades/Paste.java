@@ -12,6 +12,7 @@ public class Paste implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Lob
     private String bloqueDeCodigo;
     private String sintaxis;
     private long fechaExpiracion;

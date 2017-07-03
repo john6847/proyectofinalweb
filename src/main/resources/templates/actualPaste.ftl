@@ -5,12 +5,15 @@
     <div class="row">
         <div class="col-md-10" style="display:flex">
             <div style="height:100px;width:80px;border:1px solid green;margin-bottom:20px" >
-                <img src="" alt="">
+                <#if image??>
+                    <img style="height:100px;width:80px" src="${image}" alt="">
+                </#if>
+
             </div>
             <div style="margin-left:30px">
-                <h2 style="margin-bottom:20px">${paste.getTitulo()}</h2>
+                <h2 style="margin-bottom:15px">${paste.getTitulo()}</h2>
                 <div>
-                    <img class="iconos"  src="/images/see.png" alt="seen">0
+                    <img class="iconos"  src="/images/see.png" alt="seen">${paste.getCantidadVista()}
                     <img class="iconos" src="/images/calendar.png" alt="calendar">${fecha}
                     <img class="iconos" src="/images/guest.png" alt="guest">${user}
                 </div>
@@ -24,10 +27,10 @@
             <div class="panel panel-primary" >
                 <div class="panel panel-heading" style="padding:15px"> ${paste.getSintaxis()}
                     <div class="pull-right">
-                        <button class="btn btn-default">raw</button>
+                        <a href="/paste/raw" class="btn btn-default raw" >raw</a>
                         <button class="btn btn-default">embed</button>
-                        <button class="btn btn-default">edit</button>
-                        <button class="btn btn-default">delete</button>
+                        <a href="/paste/modify/${paste.getId()}" class="btn btn-default">edit</a>
+                        <a href="/paste/delete/${paste.getId()}" class="btn btn-default">delete</a>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -36,15 +39,12 @@
                             <form action="">
                                 <div class="form-group">
                                     <label for="raw">${titulo}</label>
+                                    <div class="raw-hjs">
                                         <pre >
-                                            <code class="${paste.getSintaxis()}">
-
-                                                ${paste.getBloqueDeCodigo()}
-
-                                            </code>
-
-
+                                            <code class="${paste.getSintaxis()}">${paste.getBloqueDeCodigo()}</code>
                                         </pre>
+                                    </div>
+
 
                                 </div>
                             </form>
@@ -74,6 +74,8 @@
                 hljs.highlightBlock(e);
             });
         });
-   </script>
+
+
+    </script>
 
 <#include "footer.ftl">

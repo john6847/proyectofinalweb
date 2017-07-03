@@ -37,7 +37,7 @@ public class PasteServices extends GestionDb<Paste>  {
 
         EntityManager entityManager = getEntityManager();
         Query query = entityManager.createQuery("select p from Paste p where p.tipoExposicion =:tipoexposicion ORDER BY p.cantidadVista DESC ");
-                query.setParameter("tipoexposicion","publico");
+                query.setParameter("tipoexposicion","public");
                 query.setFirstResult(startPosition);
                 query.setMaxResults(10);
         return query.getResultList();

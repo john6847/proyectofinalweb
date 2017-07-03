@@ -1,13 +1,14 @@
 <#include "header.ftl">
-<link type="text/css" rel="stylesheet" href="path_to/simplePagination.css"/>
 <#include "nav.ftl">
 
 <div class="container">
     <div class="row">
-        <div class="col-md-offset-3 col-md-6">
+        <div class="col-md-offset-1 col-md-9">
             <div class="myTable">
-                <h3>Paste con mas Hits</h3>
-                <p id="pasteSize" style="display: none">${pasteSize}</p>
+                <h3 style="text-align: center">Public Paste</h3>
+                <#if pasteSize??>
+                    <p id="pasteSize" style="display: none">${pasteSize}</p>
+                </#if>
                 <div class="myTable-white">
                     <table class="table">
                         <thead>
@@ -29,54 +30,49 @@
                             <td>
                             </td>
                         </tr>
-                        </tbody>
                         </#list>
                     </#if>
+                    </tbody>
                     </table>
                 </div>
-                <div class="pagination">
-
-                </div>
+                <div class="row" id="pagina">
+                    <div class="col-md-offset-5 col-md-7">
+                        <ul id="pagin">
+                        </ul>
+                    </div>
             </div>
         </div>
     </div>
 </div>
 
-<script type="text/javascript" src="path_to/jquery.js"></script>
-<script type="text/javascript" src="path_to/jquery.simplePagination.js">
-    var $pasteSize = parseInt($('#pasteSize').text());
+<script type="text/javascript">
+    $(document).ready(function () {
+        var $pasteSize = parseInt($('#pasteSize').text());
+        var numberOfPages= Math.ceil($pasteSize / 10);
 
-    $(function() {
-        $(".pagination").pagination({
+        var element = {
             items: $pasteSize,
-            itemsOnPage: 10,
-            cssStyle: 'light-theme',
-            displayedPages: 3,
-            edges:2,
-            currentPage:1,
-            prevText:'prev',
-            nextText: 'next',
-            onPageClick: function(pageNum) {
-                // Which page parts do we show?
-                currentPage=pageNum
-                var start = itemsOnPage * (pageNum - 1);
-                var end = start + itemsOnPage
+            NumberOfpage:numberOfPages
+        };
+        for (var i = 0; i <element.NumberOfpage; i++) {
+            if (i === 0) {
+                $("#pagin").append('<li><a href="/paste/show/list">' + (i + 1) + '</a></li> ');
+            } else {
+                var c = i + 1;
+                $("#pagin").append(
+                        $('<li>').append(
+                                $('<a>').addClass("pagesNumber").append(c)));
+             }
+        }
 
-                $.ajax({
-                    url:'/paste/show/list/'+pageNum, success:function (data) {
-                        $('#table-body').html(data);
-                    }
-                });
-
-                // First hide all page parts
-                // Then show those just for our page
-                $(".pagination").hide()
-                        .slice(start, end).show();
-            }
-
+        $('.pagesNumber').click(function () {
+            $.ajax({
+                url: '/paste/show/list/' + element.items + '/' + $(this).text(), success: function (data) {
+                    $('tbody').html(data);
+                }
+            });
         });
-    });
-
+});
 
 </script>
 <#include "footer.ftl">

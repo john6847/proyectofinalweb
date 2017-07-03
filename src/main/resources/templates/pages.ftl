@@ -8,6 +8,5 @@
         <td>
         </td>
     </tr>
-    </tbody>
     </#list>
 </#if>
