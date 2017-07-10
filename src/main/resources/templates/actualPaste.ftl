@@ -4,10 +4,11 @@
 
     <div class="row">
         <div class="col-md-10" style="display:flex">
-            <div style="height:100px;width:80px;border:1px solid green;margin-bottom:20px" >
-                <#if image??>
-                    <img style="height:100px;width:80px" src="${image}" alt="">
+            <div style="height:100px;width:80px;border:1px solid green;margin-bottom:20px;" >
+                <#if user?has_content && user?is_string && user=="guest">
+                    <img style="height:100px;width:80px" src="/images/png/man-2.png" alt="guest">
                 </#if>
+                <#if usuarioId??><img style="height:100px;width:80px" src="/images/users/user${usuarioId}.png" alt="usuario"></#if>
 
             </div>
             <div style="margin-left:30px">
@@ -29,8 +30,8 @@
                     <div class="pull-right">
                         <a href="/paste/raw/${paste.getId()}" class="btn btn-default raw" >raw</a>
                         <a class="btn btn-default" href="/paste/embed/${paste.getId()}">embed</a>
-                        <a href="/paste/modify/${paste.getId()}" class="btn btn-default">edit</a>
-                        <a href="/paste/delete/${paste.getId()}" class="btn btn-default">delete</a>
+                        <a href="/paste/modify/${paste.getId()}" class="btn btn-default change">edit</a>
+                        <a href="/paste/delete/${paste.getId()}" class="btn btn-default change">delete</a>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -44,8 +45,6 @@
                                             <code class="${paste.getSintaxis()}">${paste.getBloqueDeCodigo()}</code>
                                         </pre>
                                     </div>
-
-
                                 </div>
                             </form>
                         </div>
@@ -67,6 +66,10 @@
         </div>
 </div>
     <div id="pasteId" style="display: none;">${paste.getId()}</div>
+    <#if canEditAndDelete??>
+        <div id="canEdit" style="display: none;">${canEditAndDelete}</div>
+    </#if>
+
 </div>
 
     <script>
@@ -76,14 +79,24 @@
             });
 
             var id = $('#pasteId').text();
+            //$("#vista").
 
             $.ajax(
                 {
                 url: '/paste/update/hits/' + id, success: function (data) {
-                    $('#vista').html(data);
+                    $('#vista').text(data);
                 }
             });
 
+            var $user = $("#user").text();
+            var $canEdit = $("#canEdit").text()
+            if($user==="guest"){
+                $(".change").hide()
+            }else if($canEdit==="no"){
+                $(".change").hide()
+            }else{
+                $(".change").show()
+            }
         });
 
 

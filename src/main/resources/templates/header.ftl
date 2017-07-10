@@ -12,11 +12,12 @@
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/sunburst.css">
     <script type="text/javascript" src="/js/jquery.min.js"></script>
-    <script type="text/javascript" src="/js/jquery.simplePagination.js"></script>
     <script type="text/javascript" src="/js/highlight.pack.js" ></script>
+    <script type="text/javascript" src="/js/deletePaste.js" ></script>
     <script src="/js/jquery-3.2.1.min.js" type="text/javascript"></script>
     <script src="/js/jquery-ui.min.js" type="text/javascript"></script>
     <script src="/js/bootstrap.js" type="text/javascript"></script>
+
 
 </head>
 <body >

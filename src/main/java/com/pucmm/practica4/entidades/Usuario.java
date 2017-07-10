@@ -27,18 +27,22 @@ public class Usuario implements Serializable {
     private Boolean administrador;
     private String occupation;
     private long dateOfBirth;
-    private byte[] profilePicture;
+//    @Lob
+//    @Basic(fetch = FetchType.EAGER)
+//    @Column(length = 1000000)
+//    private byte[] profilePicture;
+    private String profilePicture;
     private String email;
     private String phoneNumber;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     private List<Paste>pastes;
 
     public Usuario(){
 
     }
 
-    public Usuario(String username, String password, String name, Boolean administrador, String occupation, long dateOfBirth, byte[] profilePicture, String email, String phoneNumber, List<Paste> pastes) {
+    public Usuario(String username, String password, String name, Boolean administrador, String occupation, long dateOfBirth, String profilePicture, String email, String phoneNumber, List<Paste> pastes) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -75,17 +79,6 @@ public class Usuario implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-
-
-
-    public byte[] getProfilePicture() {
-        return profilePicture;
-    }
-
-    public void setProfilePicture(byte[] profilePicture) {
-        this.profilePicture = profilePicture;
-    }
-
     public long getDateOfBirth() {
         return dateOfBirth;
     }
@@ -95,6 +88,13 @@ public class Usuario implements Serializable {
     }
 
 
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
 
     public String getOccupation() {
         return occupation;

@@ -8,8 +8,13 @@ import spark.ModelAndView;
 import spark.Session;
 import spark.template.freemarker.FreeMarkerEngine;
 import javax.imageio.ImageIO;
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.http.Part;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -34,7 +39,7 @@ public class Main {
         staticFiles.location("/publico");
 
         //Starting thread
-       // new DeletePasteThread().run();
+        // new DeletePasteThread().run();
 
         //Starting database
         BootStrapServices.getInstancia().init();
@@ -65,77 +70,83 @@ public class Main {
             Map<String, Object> model = new HashMap<>();
             model.put("titulo", "Welcome Page| Copy & Paste");
             Usuario usuario = request.session(true).attribute("usuario");
-//            if(usuario!=null){
-//
-//            }
+            if (usuario != null) {
+                model.put("usuario", usuario.getUsername());
+            }
             PasteServices pasteServices = PasteServices.getInstancia();
-            model.put("publicPaste",pasteServices.findLastPaste(pasteServices.findAll().size()-13));
+            List<Paste> pastes = pasteServices.findLastPaste(pasteServices.findAll().size() - 13);
+            Collections.reverse(pastes);
+            model.put("publicPaste", pastes);
             return new ModelAndView(model, "Paste.ftl");
-        },freeMarkerEngine);
+        }, freeMarkerEngine);
 
-        path("/paste",()->{
+        path("/paste", () -> {
             //Saving Paste
             post("/", (request, response) -> {
                 Map<String, Object> model = new HashMap<>();
-               PasteServices pasteServices = PasteServices.getInstancia();
-               Paste paste = new Paste();
-               String title=request.queryParams("title");
+                PasteServices pasteServices = PasteServices.getInstancia();
+                Paste paste = new Paste();
+                String title = request.queryParams("title");
                 System.out.println(title);
-               if(title.isEmpty()){
-                   title="untitled";
-               }
-               paste.setTitulo(title);
-               paste.setTipoExposicion(request.queryParams("expositionType"));
-               paste.setBloqueDeCodigo(request.queryParams("bloqueDeTexto"));
+                if (title.isEmpty()) {
+                    title = "untitled";
+                }
+                paste.setTitulo(title);
+                paste.setTipoExposicion(request.queryParams("expositionType"));
+                paste.setBloqueDeCodigo(request.queryParams("bloqueDeTexto"));
                 paste.setSintaxis(request.queryParams("syntax"));
                 paste.setCantidadVista(0);
                 long fechaDeHoy = new Date().getTime();
                 String expirationDate = request.queryParams("expirationDate");
-                switch (expirationDate){
+                switch (expirationDate) {
                     case "10 minutes":
-                        paste.setFechaExpiracion((10*60)+TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                        paste.setFechaExpiracion((10 * 60) + TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
                         break;
                     case "15 minutes":
-                        paste.setFechaExpiracion((15*60)+TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                        paste.setFechaExpiracion((15 * 60) + TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
                         break;
                     case "20 minutes":
-                        paste.setFechaExpiracion((20*60)+TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                        paste.setFechaExpiracion((20 * 60) + TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
                         break;
                     case "30 minutes":
-                        paste.setFechaExpiracion((30*60)+TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                        paste.setFechaExpiracion((30 * 60) + TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
                         break;
                     case "1 hour":
-                        paste.setFechaExpiracion((60*60)+TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                        paste.setFechaExpiracion((60 * 60) + TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
                         break;
                     case "1 day":
-                        paste.setFechaExpiracion((24*60*60)+TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                        paste.setFechaExpiracion((24 * 60 * 60) + TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
                         break;
                     case "1 week":
-                        paste.setFechaExpiracion(TimeUnit.DAYS.toSeconds(7)+TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                        paste.setFechaExpiracion(TimeUnit.DAYS.toSeconds(7) + TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
                         break;
                     case "never":
-                        String sDate1="31/12/9999";
-                        Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
+                        String sDate1 = "31/12/9999";
+                        Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
                         paste.setFechaExpiracion(TimeUnit.MILLISECONDS.toSeconds(date1.getTime()));
                         break;
-
                 }
 
-               paste.setFechaPublicacion(TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
-               int sizePaste = pasteServices.findAll().size();
-                if(sizePaste==0){
+                paste.setFechaPublicacion(TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                int sizePaste = pasteServices.findAll().size();
+                if (sizePaste == 0) {
                     paste.setUrl("http://localhost:4567/paste/show/embed/1");
-                }else{
-                    paste.setUrl("http://localhost:4567/paste/show/embed/"+(sizePaste+1));
+                } else {
+                    paste.setUrl("http://localhost:4567/paste/show/embed/" + (sizePaste + 1));
                 }
 
                 Usuario usuario = request.session(true).attribute("usuario");
 
-                if(usuario!=null){
-                  UsuarioServices usuarioServices1 = UsuarioServices.getInstancia();
-                  usuarioServices1.find(usuario.getId()).getPastes().add(paste);
-                  model.put("user",usuario.getUsername());
-                }else{
+                if (usuario != null) {
+                    UsuarioServices usuarioServices1 = UsuarioServices.getInstancia();
+                    Usuario usuario1 = usuarioServices1.find(usuario.getId());
+                    usuario1.getPastes().add(paste);
+                    usuario1.setPastes(usuario1.getPastes());
+                    usuarioServices1.editar(usuario1);
+                    model.put("usuarioId", usuario1.getId());
+                    model.put("user", usuario1.getUsername());
+                    model.put("usuario", usuario1.getUsername());
+                } else {
                     pasteServices.crear(paste);
                     model.put("user", "guest");
                 }
@@ -146,144 +157,168 @@ public class Main {
                 int year = cal.get(Calendar.YEAR);
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
-                model.put("fecha", day+"/"+month+"/"+year);
+                model.put("fecha", day + "/" + month + "/" + year);
                 paste.setId(sizePaste);
                 model.put("paste", paste);
-
 
                 model.put("titulo", "Actual Paste");
                 return new ModelAndView(model, "actualPaste.ftl");
             }, freeMarkerEngine);
 
 
-          //Updating Paste
-          get("/modify/:id", (request, response) -> {
-              Map <String, Object> model = new HashMap<>();
-              PasteServices pasteServices = PasteServices.getInstancia();
-             Paste paste= pasteServices.find(Long.parseLong(request.params("id")));
+            //Updating Paste
+            get("/modify/:id", (request, response) -> {
+                Map<String, Object> model = new HashMap<>();
+                PasteServices pasteServices = PasteServices.getInstancia();
+                Paste paste = pasteServices.find(Long.parseLong(request.params("id")));
 
-             model.put("titulo", "Update Paste");
-             model.put("paste", paste);
-              model.put("publicPaste",pasteServices.findLastPaste(pasteServices.findAll().size()-13));
-             return modelAndView(model, "updatePaste.ftl");
-          }, freeMarkerEngine);
+                model.put("titulo", "Update Paste");
+                model.put("paste", paste);
+                Usuario usuario = request.session(true).attribute("usuario");
+                if (usuario != null) {
+                    model.put("usuario", usuario.getUsername());
+                }
+                model.put("publicPaste", pasteServices.findLastPaste(pasteServices.findAll().size() - 13));
+                return new ModelAndView(model, "updatePaste.ftl");
+            }, freeMarkerEngine);
 
-          put("/modify/:id", (request, response) -> {
-             PasteServices pasteServices = PasteServices.getInstancia();
-             Paste paste= pasteServices.find(Long.parseLong(request.params("id")));
-             paste.setBloqueDeCodigo(request.queryParams("bloqueDeTexto"));
-             paste.setTitulo(request.queryParams("title"));
-             paste.setSintaxis(request.queryParams("syntax"));
-             long fechaDeHoy = new Date().getTime();
-             switch (request.queryParams("expirationDate")) {
-                 case "10 minutes":
-                     paste.setFechaExpiracion((10 * 60) + TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
-                     break;
-                 case "15 minutes":
-                     paste.setFechaExpiracion((15 * 60) + TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
-                     break;
-                 case "20 minutes":
-                     paste.setFechaExpiracion((20 * 60) + TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
-                     break;
-                 case "30 minutes":
-                     paste.setFechaExpiracion((30 * 60) + TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
-                     break;
-                 case "1 hour":
-                     paste.setFechaExpiracion((60 * 60) + TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
-                     break;
-                 case "1 day":
-                     paste.setFechaExpiracion((24 * 60 * 60) + TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
-                     break;
-                 case "1 week":
-                     paste.setFechaExpiracion(TimeUnit.DAYS.toSeconds(7) + TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
-                     break;
-                 case "never":
-                     String sDate1="31/12/9999";
-                     Date date1=new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
-                     paste.setFechaExpiracion(TimeUnit.MILLISECONDS.toSeconds(date1.getTime()));
-                     break;
+            post("/modify/:id", (request, response) -> {
+                PasteServices pasteServices = PasteServices.getInstancia();
+                Paste paste = pasteServices.find(Long.parseLong(request.params("id")));
+                paste.setBloqueDeCodigo(request.queryParams("bloqueDeTexto"));
+                paste.setTitulo(request.queryParams("title"));
+                paste.setSintaxis(request.queryParams("syntax"));
+                long fechaDeHoy = new Date().getTime();
+                switch (request.queryParams("expirationDate")) {
+                    case "10 minutes":
+                        paste.setFechaExpiracion((10 * 60) + TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                        break;
+                    case "15 minutes":
+                        paste.setFechaExpiracion((15 * 60) + TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                        break;
+                    case "20 minutes":
+                        paste.setFechaExpiracion((20 * 60) + TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                        break;
+                    case "30 minutes":
+                        paste.setFechaExpiracion((30 * 60) + TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                        break;
+                    case "1 hour":
+                        paste.setFechaExpiracion((60 * 60) + TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                        break;
+                    case "1 day":
+                        paste.setFechaExpiracion((24 * 60 * 60) + TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                        break;
+                    case "1 week":
+                        paste.setFechaExpiracion(TimeUnit.DAYS.toSeconds(7) + TimeUnit.MILLISECONDS.toSeconds(fechaDeHoy));
+                        break;
+                    case "never":
+                        String sDate1 = "31/12/9999";
+                        Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
+                        paste.setFechaExpiracion(TimeUnit.MILLISECONDS.toSeconds(date1.getTime()));
+                        break;
 
-             }
-             paste.setFechaPublicacion(TimeUnit.MILLISECONDS.toSeconds(new Date().getTime()));
-             paste.setTipoExposicion(request.queryParams("expositionType"));
-             pasteServices.editar(paste);
-             response.redirect("/user/show/paste");
-              return "";
-          });
+                }
+                paste.setFechaPublicacion(TimeUnit.MILLISECONDS.toSeconds(new Date().getTime()));
+                paste.setTipoExposicion(request.queryParams("expositionType"));
+                pasteServices.editar(paste);
 
-          get("/raw/:id", (request, response) -> {
-              Map<String, Object>model = new HashMap<>();
-              model.put("titulo", "Raw Text");
-              PasteServices pasteServices = PasteServices.getInstancia();
-              Paste paste = pasteServices.find(Long.parseLong(request.params("id")));
-              model.put("text", paste.getBloqueDeCodigo());
-              return new ModelAndView(model,"raw.ftl");
-          },freeMarkerEngine);
+                response.redirect("/user/show/paste");
+                return "";
+            });
+
+            get("/raw/:id", (request, response) -> {
+                Map<String, Object> model = new HashMap<>();
+                model.put("titulo", "Raw Text");
+                PasteServices pasteServices = PasteServices.getInstancia();
+                Paste paste = pasteServices.find(Long.parseLong(request.params("id")));
+                model.put("text", paste.getBloqueDeCodigo());
+                return new ModelAndView(model, "raw.ftl");
+            }, freeMarkerEngine);
 
             //Deleting paste
-            delete("/delete/:id", (request, response) -> {
+            get("/delete/:id", (request, response) -> {
                 PasteServices pasteServices = PasteServices.getInstancia();
-                pasteServices.delete(Long.parseLong(request.params("id")));
-                //            Usuario usuario = request.session(true).attribute("usuario");
-                //
-                //            if(usuario==null){
-                //                response.redirect("/user/login");
-                //            }
+                Paste paste = pasteServices.find(Long.parseLong(request.params("id")));
+                pasteServices.delete(paste.getId());
                 response.redirect("/");
                 return "";
             });
             //embedding paste
             get("/embed/:id", (request, response) -> {
-                Map <String, Object> model = new HashMap<>();
-                PasteServices pasteServices = PasteServices.getInstancia();
-                Paste paste= pasteServices.find(Long.parseLong(request.params("id")));
-                System.out.println(paste.getId()    );
-                model.put("titulo", "embed Paste");
-                model.put("paste", paste);
-                return modelAndView(model, "embededPage.ftl");
-            },freeMarkerEngine);
-
-            get("/show/embed/:id", (request, response) -> {
-                Map <String, Object> model = new HashMap<>();
-                PasteServices pasteServices = PasteServices.getInstancia();
-                Paste paste= pasteServices.find(Long.parseLong(request.params("id")));
-                System.out.println(paste.getId()    );
-                model.put("titulo", "embed Paste");
-                model.put("paste", paste);
-                return modelAndView(model, "showEmbed.ftl");
-            },freeMarkerEngine);
-
-            get("/update/hits/:id",(request, response) -> {
+                Map<String, Object> model = new HashMap<>();
                 PasteServices pasteServices = PasteServices.getInstancia();
                 Paste paste = pasteServices.find(Long.parseLong(request.params("id")));
-                paste.setCantidadVista(paste.getCantidadVista()+1);
+                System.out.println(paste.getId());
+                model.put("titulo", "embed Paste");
+                model.put("paste", paste);
+                Usuario usuario = request.session(true).attribute("usuario");
+                if (usuario != null) {
+                    model.put("usuario", usuario.getUsername());
+                }
+                return new ModelAndView(model, "embededPage.ftl");
+            }, freeMarkerEngine);
+
+            get("/show/embed/:id", (request, response) -> {
+                Map<String, Object> model = new HashMap<>();
+                PasteServices pasteServices = PasteServices.getInstancia();
+                Paste paste = pasteServices.find(Long.parseLong(request.params("id")));
+                System.out.println(paste.getId());
+                model.put("titulo", "embed Paste");
+                model.put("paste", paste);
+                Usuario usuario = request.session(true).attribute("usuario");
+                if (usuario != null) {
+                    model.put("usuario", usuario.getUsername());
+                }
+                return new ModelAndView(model, "showEmbed.ftl");
+            }, freeMarkerEngine);
+
+            get("/update/hits/:id", (request, response) -> {
+                PasteServices pasteServices = PasteServices.getInstancia();
+                Paste paste = pasteServices.find(Long.parseLong(request.params("id")));
+                paste.setCantidadVista(paste.getCantidadVista() + 1);
                 pasteServices.editar(paste);
                 return paste.getCantidadVista();
             });
+            //-----------------------------------------------------------------------------------------------
+            get("/eliminar", (request, response) -> {
+                PasteServices pasteServices = PasteServices.getInstancia();
+                List<Paste> pastes= pasteServices.selectByDate();
+                for(Paste paste: pastes){
+                    pasteServices.delete(paste.getId());
+                }
+                return "deleted";
+            });
 
-            path("/show",()->{
+            path("/show", () -> {
 
-                get("/list",(request, response) -> {
-                    Map<String, Object>model = new HashMap<>();
+                get("/list", (request, response) -> {
+                    Map<String, Object> model = new HashMap<>();
                     model.put("titulo", "Show all User");
                     PasteServices pasteServices = PasteServices.getInstancia();
 
                     model.put("pastes", pasteServices.getPasteByCantAccAndPublic(0));
 
                     model.put("pasteSize", pasteServices.findAll().size());
-                    return modelAndView(model, "PasteConMasHits.ftl");
-                },freeMarkerEngine);
+                    Usuario usuario = request.session(true).attribute("usuario");
+                    if (usuario != null) {
+                        model.put("usuario", usuario.getUsername());
+                    }
+                    return new ModelAndView(model, "PasteConMasHits.ftl");
+                }, freeMarkerEngine);
 
-                get("/list/:size/:page",(request, response) -> {
-                    Map<String, Object>model = new HashMap<>();
-                    int page= Integer.parseInt(request.params("page"));
-                    int size= Integer.parseInt(request.params("size"));
+                get("/list/:size/:page", (request, response) -> {
+                    Map<String, Object> model = new HashMap<>();
+                    int page = Integer.parseInt(request.params("page"));
+                    int size = Integer.parseInt(request.params("size"));
                     PasteServices pasteServices = PasteServices.getInstancia();
-                    model.put("pastes", pasteServices.getPasteByCantAccAndPublic((10*page)-10));
-
+                    model.put("pastes", pasteServices.getPasteByCantAccAndPublic((10 * page) - 10));
+                    Usuario usuario = request.session(true).attribute("usuario");
+                    if (usuario != null) {
+                        model.put("usuario", usuario.getUsername());
+                    }
                     model.put("pasteSize", size);
-                    return modelAndView(model, "pages.ftl");
-                },freeMarkerEngine);
+                    return new ModelAndView(model, "pages.ftl");
+                }, freeMarkerEngine);
 
 
                 //ver un paste publico
@@ -295,25 +330,36 @@ public class Main {
 
                     Usuario usuario = request.session(true).attribute("usuario");
 
-                    if(usuario!=null){
-                        UsuarioServices usuarioServices1 = UsuarioServices.getInstancia();
-                        usuarioServices1.find(usuario.getId()).getPastes().add(paste);
-                        model.put("user",usuario.getUsername());
-                        InputStream in = new ByteArrayInputStream(usuario.getProfilePicture());
-                        BufferedImage bImageFromConvert = ImageIO.read(in);
+                    if (usuario != null) {
+                        Usuario usuario1 = usuarioServices.find(usuario.getId());
+                        List<Paste> pastes = usuario1.getPastes();
+                        boolean canEdit = false;
+                        for (Paste paste1 : pastes) {
+                            if (paste1.getId() == Long.parseLong(request.params("id"))) {
+                                canEdit = true;
+                                break;
+                            }
+                        }
+                        if (canEdit) {
+                            model.put("canEditAndDelete", "yes");
+                        } else {
+                            model.put("canEditAndDelete", "no");
+                        }
 
-                        ImageIO.write(bImageFromConvert, "png", new File(
-                                "/home/anyderre/IdeaProjects/parcial#2/src/main/resources/publico/images/users/user.png"));
-                        model.put("image", "/images/users/user.png");
-                    }else{
-                        pasteServices.crear(paste);
+                        model.put("user", usuario.getUsername());
+                        model.put("usuario", usuario.getUsername());
+                        System.out.println("was there");
+                        model.put("usuarioId", usuario.getId());
+                        System.out.println(usuario.getId());
+
+                    } else {
                         model.put("user", "guest");
                     }
 
                     long fecha = paste.getFechaPublicacion();
-                    fecha = fecha*1000;
+                    fecha = fecha * 1000;
                     Date date = new Date(fecha);
-                    SimpleDateFormat sdf = new SimpleDateFormat("EEEE,MMMM d,yyyy h:mm,a", Locale.getDefault());
+                    SimpleDateFormat sdf = new SimpleDateFormat("EEEE,MMMM d,yyyy", Locale.getDefault());
                     sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
                     String formattedDate = sdf.format(date);
 
@@ -328,11 +374,15 @@ public class Main {
             });
         });
 //---------------------------User Crud-------------------------------------------
-        path("/user", ()->{
+        path("/user", () -> {
 
             get("/signIn", (request, response) -> {
                 Map<String, Object> attributes = new HashMap<>();
                 attributes.put("titulo", "Login");
+                Usuario usuario = request.session(true).attribute("usuario");
+                if (usuario != null) {
+                    attributes.put("usuario", usuario.getUsername());
+                }
                 return new ModelAndView(attributes, "login.ftl");
             }, freeMarkerEngine);
 
@@ -348,18 +398,17 @@ public class Main {
                 UsuarioServices usuarioServices1 = UsuarioServices.getInstancia();
 
                 List<Usuario> usuarios = usuarioServices1.getUsuario(username);
-                if (usuarios.get(0).getName() != null) {
-
+                if (!usuarios.isEmpty()) {
                     if (usuarios.get(0).getUsername().equals(username) && usuarios.get(0).getPassword().equals(password)) {
                         usuario.setId(usuarios.get(0).getId());
-                         usuario.setAdministrador(usuarios.get(0).getAdministrador());
+                        usuario.setAdministrador(usuarios.get(0).getAdministrador());
                         usuario.setName(usuarios.get(0).getName());
                         session.attribute("usuario", usuario);
                         response.redirect("/");
                     }
                 }
-                attributes.put("message", "Lo siento no tienes cuenta registrada solo un admin puede registrarte");
-                attributes.put("titulo", "login");
+                attributes.put("message", "Error while signing in, please verify username and password");
+                attributes.put("titulo", "Sign In");
 
                 return new ModelAndView(attributes, "login.ftl");
             }, freeMarkerEngine);
@@ -368,81 +417,180 @@ public class Main {
                 Map<String, Object> attributes = new HashMap<>();
 
                 attributes.put("titulo", "Registrar");
+
                 return new ModelAndView(attributes, "registrar.ftl");
             }, freeMarkerEngine);
 
             post("/signUp", (request, response) -> {
                 Map<String, Object> attributes = new HashMap<>();
 
-                if(request.queryParams("password").matches(request.queryParams("password-confirm"))){
-                        Usuario newUsuario = new Usuario();
-                        newUsuario.setName(request.queryParams("nombre"));
-                        newUsuario.setAdministrador(false);
-                        newUsuario.setPassword(request.queryParams("password"));
-                        newUsuario.setUsername(request.queryParams("username"));
-                        UsuarioServices usuarioServices1 = UsuarioServices.getInstancia();
-                        usuarioServices1.crear(newUsuario);
-                        response.redirect("/");
-                }else{
+                if (request.queryParams("password").matches(request.queryParams("password-confirm"))) {
+                    Usuario newUsuario = new Usuario();
+                    newUsuario.setName(request.queryParams("nombre"));
+                    newUsuario.setAdministrador(false);
+                    newUsuario.setPassword(request.queryParams("password"));
+                    newUsuario.setUsername(request.queryParams("username"));
+                    UsuarioServices usuarioServices1 = UsuarioServices.getInstancia();
+                    usuarioServices1.crear(newUsuario);
+                    response.redirect("/");
+                } else {
                     attributes.put("confirm", "password doesn't match");
                 }
                 attributes.put("titulo", "Register User");
-                return new ModelAndView(attributes,"registrar.ftl");
-            },freeMarkerEngine);
+                return new ModelAndView(attributes, "registrar.ftl");
+            }, freeMarkerEngine);
+
+            get("/signOut", (request, response) -> {
+               request.session().invalidate();
+               response.redirect("/");
+               return "";
+            });
 
             get("/update/profile", (request, response) -> {
                 Map<String, Object> model = new HashMap<>();
                 model.put("titulo", "update user profile");
 
-                Usuario usuario= request.session(true).attribute("usuario");
-                if(usuario==null){
+                Usuario usuario = request.session(true).attribute("usuario");
+                if (usuario == null) {
                     response.redirect("/user/signIn");
+                } else {
+                    model.put("usuario", usuario.getUsername());
                 }
-                model.put("usuario", usuario);
+                model.put("usuarioUpdate", usuario);
 
                 return new ModelAndView(model, "UpdateUser.ftl");
-            },freeMarkerEngine);
+            }, freeMarkerEngine);
 
             post("/update/profile", (request, response) -> {
+                if (request.raw().getAttribute("org.eclipse.jetty.multipartConfig") == null) {
+                    MultipartConfigElement multipartConfigElement = new MultipartConfigElement(System.getProperty("java.io.tmpdir"));
+                    request.raw().setAttribute("org.eclipse.jetty.multipartConfig", multipartConfigElement);
+                }
                 Map<String, Object> model = new HashMap<>();
                 model.put("titulo", "update user profile");
 
-                Usuario usuario= request.session(true).attribute("usuario");
+                Usuario usuario = request.session(true).attribute("usuario");
                 usuario.setName(request.queryParams("name"));
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 usuario.setDateOfBirth(formatter.parse(request.queryParams("dateOfBirth")).getTime());
                 usuario.setEmail(request.queryParams("email"));
                 usuario.setOccupation(request.queryParams("occupation"));
                 usuario.setPhoneNumber(request.queryParams("phoneNumber"));
-                usuario.setProfilePicture(extractBytes2(request.queryParams("optradio")));
+                String out = "/home/anyderre/IdeaProjects/parcial#2/src/main/resources/publico/images/users/user" + usuario.getId() + ".png";
 
-                if(usuario!=null){
+
+                String location = "/publico/images/users/";  // the directory location where files will be stored
+                long maxFileSize = 100000000;  // the maximum size allowed for uploaded files
+                long maxRequestSize = 100000000;  // the maximum size allowed for multipart/form-data requests
+                int fileSizeThreshold = 1024;  // the size threshold after which files will be written to disk
+
+                MultipartConfigElement multipartConfigElement = new MultipartConfigElement(location, maxFileSize, maxRequestSize, fileSizeThreshold);
+                Part file = request.raw().getPart("photo");
+
+                Path filePath = Paths.get(out);
+                System.out.println(filePath);
+                File f = new File(out);
+
+                if (f.exists() && filePath.toString().equals(out)) {
+                    Files.delete(filePath);
+                }
+
+                Files.copy(file.getInputStream(), filePath);
+
+                if (usuario == null) {
                     response.redirect("/user/signIn");
                 }
-                model.put("usuario", usuario);
 
-                return new ModelAndView(model, "/");
-            },freeMarkerEngine);
+                response.redirect("/");
+                return "";
+            });
 
-            get("/show/paste",(request, response) -> {
-                Map<String, Object>model = new HashMap<>();
+
+            get("/show/paste", (request, response) -> {
+                Map<String, Object> model = new HashMap<>();
+                Usuario usuario = request.session(true).attribute("usuario");
+                if (usuario == null) {
+                    response.redirect("/user/signIn");
+                } else {
+                    model.put("usuario", usuario.getUsername());
+                }
+                UsuarioServices usuarioServices1 = UsuarioServices.getInstancia();
+                Usuario usuario1 = usuarioServices1.find(usuario.getId());
+                List<Paste> pastes = usuario1.getPastes();
                 model.put("titulo", "Show list Of user Paste");
-                //Method to continue
-                return modelAndView(model, "verPasteBin.ftl");
-            },freeMarkerEngine);
+                model.put("pastes", pastes);
 
-        });
+                return new ModelAndView(model, "verPasteBin.ftl");
+            }, freeMarkerEngine);
 
 
-//--------------------------
-        before("/agregar/comentario/:articulo", (request, response) -> {
+        get("/listar/user", (request, response) -> {
+            ArrayList<Usuario> eTemp = new ArrayList<>();
+            Map<String, Object> model = new HashMap<>();
+            model.put("titulo", "Create an admin");
+
             Usuario usuario = request.session(true).attribute("usuario");
-            if (usuario == null) {
-                response.redirect("/login");
+            if (usuario == null || !usuario.getAdministrador()) {
+                response.redirect("/user/signIn");
+                return new ModelAndView("message", "Sorry you're not an admin");
             }
+
+            UsuarioServices usuarioServices1 = UsuarioServices.getInstancia();
+            List<Usuario> usuarios = usuarioServices1.findAll();
+
+            System.out.println(usuarios);
+            for (Usuario us : usuarios) {
+                if (!us.getAdministrador()) {
+                    eTemp.add(us);
+                    // usuarios.remove(us);
+                }
+            }
+            model.put("usuarios", eTemp);
+
+            return new ModelAndView(model, "createUserAdmin.ftl");
+        }, freeMarkerEngine);
+
+        //Deleting paste
+        get("/delete/:id", (request, response) -> {
+            Map<String, Object> model = new HashMap<>();
+            Usuario usuario = request.session(true).attribute("usuario");
+            UsuarioServices usuarioServices1 = UsuarioServices.getInstancia();
+            PasteServices pasteServices = PasteServices.getInstancia();
+            List<Paste> tempPaste = new ArrayList<>();
+
+
+            Usuario usuario1 = usuarioServices1.find(usuario.getId());
+            List<Paste> pastes = usuario1.getPastes();
+
+            for (Paste paste : pastes) {
+                if (paste.getId() != Long.parseLong(request.params("id"))) {
+                    tempPaste.add(paste);
+                }
+            }
+            usuario1.setPastes(tempPaste);
+            usuarioServices1.editar(usuario1);
+            response.redirect("/user/show/paste");
+            return "";
         });
 
-    }
+        get("/add/admin/:id", (request, response) -> {
+            Map<String, Object> model = new HashMap<>();
+            model.put("titulo", "Create an admin");
+            UsuarioServices usuarioServices1 = UsuarioServices.getInstancia();
+            List<Usuario> usuarios = usuarioServices1.findAll();
+
+            for (Usuario us : usuarios) {
+                if (us.getId() == Long.parseLong(request.params("id"))) {
+                    us.setAdministrador(true);
+                    usuarioServices1.editar(us);
+                }
+            }
+            response.redirect("/user/listar/user");
+            return "";
+        });
+
+    });
+}
     private static int getHerokuAssignedPort() {
         ProcessBuilder processBuilder = new ProcessBuilder();
         if (processBuilder.environment().get("PORT") != null) {

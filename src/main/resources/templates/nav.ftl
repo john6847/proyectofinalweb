@@ -32,15 +32,25 @@
             </form>
 
             <ul class="nav navbar-nav navbar-right">
-                <li> <a href="/user/show/user/list"><img src="/images/list.png" title="my paste" alt=""></a></li>
+                <li> <a href="/user/show/paste"><img src="/images/list.png" title="my paste" alt=""></a></li>
                 <li><a href="/user/update/profile"><img src="/images/settings.png" title="update profile" alt=""></a></li>
-                <li><a id="logged" href="/user/signIn">Login</a></li>
+                <#if usuario??>
+                    <li id="LoggedIn"><a  href="/user/update/profile">Welcome, <strong style="color: blue;">${usuario}</strong></a></li>
+                <#else >
+                    <li id="LoggedIn"><a id="logged" href="/user/signIn">Login</a></li>
+                </#if>
+
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li> <a href="/user/signIn">Sign in</a></li>
+                        <#if usuario??>
+                            <li> <a href="/user/signOut">Sign Out</a></li>
+                            <#else>
+                                <li> <a href="/user/signIn">Sign in</a></li>
+                        </#if>
+
                         <li> <a href="/user/signUp">Sign up</a></li>
-                        <li> <a href="/user/add/admin">Create Admin</a></li>
+                        <li> <a href="/user/listar/user">Create Admin</a></li>
                     </ul>
                 </li>
             </ul>

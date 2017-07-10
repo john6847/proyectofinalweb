@@ -10,11 +10,11 @@
         </div>
         <div class="panel-body">
             <ul class="list-group">
-                <#if publicPaste??>
-                    <#list publicPaste as p>
-                        <li class="list-group-item"><a href="/paste/show/${p.getId()}">${p.getTitulo()}</a><span class="pull-right">${p.getSintaxis()}</span></li>
-                    </#list>
-                </#if>
+            <#if publicPaste??>
+                <#list publicPaste as p>
+                    <li class="list-group-item"><a href="/paste/show/${p.getId()}">${p.getTitulo()}</a><span class="pull-right">${p.getSintaxis()}</span></li>
+                </#list>
+            </#if>
             </ul>
         </div>
     </div>
@@ -22,7 +22,7 @@
         <div class="panel-heading">Copy and Paste</div>
         <div class="panel-body">
 
-            <form action="/paste/" method="post">
+            <form action="/paste/" method="post" name="myForm" onsubmit="return(validate());" >
                 <div class="row">
                     <div class="col-md-offset col-md-7">
                         <div class="form-group">
@@ -34,6 +34,7 @@
                             <label for="bloqueDeTexto">New Paste</label>
                             <textarea class="form-control" name="bloqueDeTexto" id="bloqueDeTexto" cols="50"
                                       rows="20"></textarea>
+                            <p id="demo"></p>
                         </div>
                     </div>
                     <div class="col-md-5">
@@ -86,7 +87,7 @@
                         </div>
                         <div class="form-group">
                             <label for="expirationDate">Expiration Date</label>
-                            <select class="form-control" name="expirationDate" id="expirationDate">
+                            <select class="form-control" name="expirationDate" id="expirationDate" >
                                 <option selected="disabled">Select One</option>
                                 <option>never</option>
                                 <option>10 minutes</option>
@@ -98,7 +99,7 @@
                             </select>
                             <div class="form-group">
                                 <label for="expositionType">Exposition Type</label>
-                                <select class="form-control" name="expositionType" id="expositionType">
+                                <select class="form-control" name="expositionType" id="expositionType" >
                                     <option selected="disabled">Select One</option>
                                     <option>public</option>
                                     <option>private</option>
@@ -121,4 +122,48 @@
     </div>
 
 </div>
+
+<script type="text/javascript">
+
+    function validate() {
+
+        if (document.myForm.title.value === "") {
+            alert("Please provide the title of the form");
+            document.myForm.title.focus();
+            return false;
+        }
+
+        if (document.myForm.bloqueDeTexto.value == "") {
+            alert("Please provide the text block of the form");
+            document.myForm.bloqueDeTexto.focus();
+            return false;
+        }
+
+        if (document.myForm.syntax.value === "Select One")
+        {
+            alert('Please enter Syntax name');
+            document.getElementById('syntax').style.borderColor = "red";
+            return false;
+        }
+
+        if (document.myForm.expirationDate.value === "Select One")
+        {
+            alert('Please enter expiration date');
+            document.getElementById('expirationDate').style.borderColor = "red";
+            return false;
+        }
+
+        if (document.myForm.expositionType.value === "Select One")
+        {
+            alert('Please enter expiration date');
+            document.getElementById('expositionType').style.borderColor = "red";
+            return false;
+        }
+
+    }
+
+
+
+</script>
 <#include "footer.ftl">
+

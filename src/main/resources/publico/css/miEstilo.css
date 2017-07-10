@@ -130,7 +130,9 @@ a:hover { text-decoration: none }
 .links:hover{
     cursor: pointer;
 }
-
+body{
+    background:url("/images/background.jpg");
+}
 #header{
     text-align: center;
 }

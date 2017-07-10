@@ -45,6 +45,8 @@
         <br>
     </form>
     </div>
-
+<#if message??>
+<p style="color:red;font-weight: bold">${message}</p>
+</#if>
     
 <#include "footer.ftl">
